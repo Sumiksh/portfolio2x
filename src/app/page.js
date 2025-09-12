@@ -1,103 +1,122 @@
+'use client';
 import Image from "next/image";
+import { useTheme } from "next-themes";
+import { Navbar } from "../components/ui/navbar";
+import { useState, useEffect } from "react";
+
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  console.log("isDark:", isDark);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [chatMessages, setChatMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const sendMessage = async () => {
+    if (!chatInput.trim()) return;
+    setLoading(true);
+    setChatMessages((msgs) => [...msgs, { sender: "user", text: chatInput }]);
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: chatInput }),
+      });
+      const data = await res.json();
+      setChatMessages((msgs) => [...msgs, { sender: "bot", text: data.reply || "No response" }]);
+    } catch (err) {
+      setChatMessages((msgs) => [...msgs, { sender: "bot", text: "Error sending message." }]);
+    }
+    setChatInput("");
+    setLoading(false);
+  };
+
+  return (
+    <main className={`min-h-screen flex items-center justify-center ${isDark ? "bg-[#18181b] text-white" : "bg-white text-black"}`}>
+      <Navbar />
+      <div className="h-20" />
+      <button
+        onClick={() => setChatOpen((open) => !open)}
+        className="fixed bottom-6 right-6 z-999 px-4 py-2 rounded-full bg-blue-600 text-white shadow-lg"
+      >
+        {chatOpen ? "Close Chat" : "Chat"}
+      </button>
+      {/* Chatbot UI */}
+      {chatOpen && (
+        <div className="fixed bottom-20 right-6 z-50 w-80 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg flex flex-col">
+          <div className="p-3 border-b border-gray-200 dark:border-gray-700 font-bold">Chatbot</div>
+          <div className="flex-1 p-3 overflow-y-auto" style={{ maxHeight: "250px" }}>
+            {chatMessages.map((msg, idx) => (
+              <div key={idx} className={`mb-2 text-sm ${msg.sender === "user" ? "text-right" : "text-left"}`}>
+                <span className={msg.sender === "user" ? "bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100 px-2 py-1 rounded" : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 rounded"}>
+                  {msg.text}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="p-3 border-t border-gray-200 dark:border-gray-700 flex gap-2">
+            <input
+              type="text"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              className="flex-1 px-2 py-1 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white"
+              placeholder="Type your message..."
+              disabled={loading}
+              onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <button
+              onClick={sendMessage}
+              className="px-3 py-1 rounded bg-blue-600 text-white"
+              disabled={loading}
+            >
+              Send
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      )}
+      
+      <div className="flex w-full max-w-6xl mx-auto h-[70vh] items-center">
+        {/* Left: Image */}
+        <div className="w-1/2 flex justify-center items-center">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src="/profile-art.png"
+            alt="Profile Art"
+            width={400}
+            height={400}
+            className="rounded-xl object-cover shadow-lg"
+            priority
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </div>
+        {/* Right: Text */}
+        <div className="w-1/2 flex flex-col justify-center items-start px-8">
+          <h1 className="text-5xl font-bold mb-6 leading-tight">
+            Turning Vision Into<br />Reality With Code And Design.
+          </h1>
+          <p className="mb-8 text-lg text-muted-foreground">
+            As a skilled full-stack developer, I am dedicated to turning ideas into innovative web applications.<br />
+            Explore my latest projects and articles, showcasing my expertise in React.js and web development.
+          </p>
+          <div className="flex gap-4">
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-6 py-3 rounded-lg font-semibold shadow border flex items-center gap-2 ${isDark ? "bg-white text-black border-gray-300 hover:bg-gray-100" : "bg-black text-white border-gray-800 hover:bg-gray-900"}`}
+            >
+              Resume
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a
+              href="/contact"
+              className={`px-6 py-3 rounded-lg font-semibold border transition ${isDark ? "bg-transparent text-white border-white hover:bg-white hover:text-black" : "bg-transparent text-black border-black hover:bg-black hover:text-white"}`}
+            >
+              Contact
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
