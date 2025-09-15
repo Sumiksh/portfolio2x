@@ -24,21 +24,19 @@ Diploma Electrical Engineering — Georgian College (Jan 2017)
   `,
   experience: `
 Ontario Public Services (TBS Branch), Junior Programmer Co-op (Jan–May 2025)
-• Developed Python-based ETL scripts to transform SQL Server data, generating Power BI datasets.
-• Conducted UAT, tracked defects, coordinated with teams/vendors.
-• Automated ingestion into Azure SQL DB via ADF pipelines (70% time saved).
-• Designed Spark SQL models in Databricks to improve executive reports.
-
+Developed Python-based ETL scripts to transform SQL Server data, generating Power BI datasets.
+Conducted UAT, tracked defects, coordinated with teams/vendors.
+Automated ingestion into Azure SQL DB via ADF pipelines (70% time saved).
+Designed Spark SQL models in Databricks to improve executive reports.
 CIBC, Android Developer Co-op (May–Aug 2024)
-• Implemented MVVM architecture for gamification feature.
-• Integrated Adobe Analytics to track user engagement.
-• Documented workflows in Confluence; tracked UAT in Jira.
-
+Implemented MVVM architecture for gamification feature.
+Integrated Adobe Analytics to track user engagement.
+Documented workflows in Confluence; tracked UAT in Jira.
 Claret Asset Management, IT Specialist (Jun 2022–Jan 2023)
-• Replaced SSIS pipelines with Python ETL.
-• Worked with PostgreSQL + MongoDB for transformations.
-• Built Snowpipes in Snowflake for continuous ingestion.
-• Delivered Power BI dashboards; automated weekly downloads saving 100 hrs/month.
+Replaced SSIS pipelines with Python ETL.
+Worked with PostgreSQL + MongoDB for transformations.
+Built Snowpipes in Snowflake for continuous ingestion.
+Delivered Power BI dashboards; automated weekly downloads saving 100 hrs/month.
   `,
   projects: `
 Seattle Airbnb Recommendation (Apr 2024)
@@ -61,10 +59,10 @@ DataCamp: OOP in Python, Intro to Python
   `,
 };
 
-// ==== SIMPLE ROUTING MAP ====
+// ==== SIMPLE ROUTING MAP ==== // extra functioniliy for 
 const KEYWORDS_TO_SECTIONS = [
   { keys: ['certifications','cert', 'aws', 'linkedin', 'datacamp'], sections: ['certifications'] },
-  { keys: ['work', 'job', 'experience', 'cibc', 'ontario', 'claret'], sections: ['experience'] },
+  { keys: ['experience', 'work', 'job', 'cibc', 'ontario', 'claret'], sections: ['experience'] },
   { keys: ['education', 'degree', 'seneca', 'georgian'], sections: ['education'] },
   { keys: ['projects','project', 'github', 'airbnb', 'portfolio', 'cnn', 'machine learning'], sections: ['projects'] },
   { keys: ['skills','skill', 'stack', 'tools'], sections: ['skills'] },
@@ -74,18 +72,16 @@ const KEYWORDS_TO_SECTIONS = [
 // ==== SECTION PICKER ====
 function pickSections(userMsg) {
   const q = (userMsg || '').toLowerCase();
+  console.log('User message for section picking:', q);
   const selected = new Set();
   for (const rule of KEYWORDS_TO_SECTIONS) {
+    // console.log('Checking rule:', rule);
     if (rule.keys.some(k => q.includes(k))) {
       rule.sections.forEach(s => selected.add(s));
     }
   }
-  // fallback: include all sections if nothing obvious
-  const final = selected.size
-    ? Array.from(selected)
-    : ['summary', 'skills', 'education', 'experience', 'projects', 'certifications'];
-  if (selected.size && !selected.has('summary')) final.unshift('summary');
-  return final;
+  // Only return matched sections, no fallback
+  return Array.from(selected);
 }
 
 // ==== BUILD PROMPT ====

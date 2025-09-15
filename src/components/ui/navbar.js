@@ -24,7 +24,7 @@ export function Navbar({ className }) {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
-                <Link href="/homepage" className={"hover:underline " + (isDark ? "text-white" : "text-black")}>Home</Link>
+                <Link href="/" className={"hover:underline " + (isDark ? "text-white" : "text-black")}>Home</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>

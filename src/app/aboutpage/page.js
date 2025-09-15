@@ -7,10 +7,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
-import { useState, useEffect } from "react";
 
 export default function AboutPage() {
   // const { theme, setTheme } = useTheme();
