@@ -11,6 +11,11 @@ export default function Home() {
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   // Animation for profile photo
   const [imgVisible, setImgVisible] = useState(false);
   useEffect(() => {
@@ -47,7 +52,7 @@ export default function Home() {
     <>
       <main
         className={`min-h-screen flex items-center justify-center ${
-          isDark ? "bg-[#18181b] text-white" : "bg-white text-black"
+          mounted ? (isDark ? "bg-[#18181b] text-white" : "bg-white text-black") : "bg-gray-100 text-gray-900"
         }`}
       >
         <Navbar />
@@ -115,8 +120,8 @@ export default function Home() {
             <Image
               src="/profile.jpg"
               alt="Profile Art"
-              width={300}
-              height={300}
+              width={400}
+              height={400}
               className={`rounded-xl object-cover shadow-lg transition-all duration-700 ease-out ${
                 imgVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
               }`}
