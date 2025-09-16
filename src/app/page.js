@@ -181,7 +181,7 @@ export default function Home() {
           zIndex: 99999,
         }}
       >
-        {chatOpen ? "Close Chat" : "Chat"}
+        {chatOpen ? "Close Chat" : "AI Resume Chat"}
       </button>
     </>
   );
