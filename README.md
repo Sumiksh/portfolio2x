@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Portfolio2x
+
+A modern, theme-aware portfolio built with Next.js, Tailwind CSS, and shadcn/ui.
+
+## Features
+- Responsive landing page with animated profile photo
+- Global dark/light theme toggle
+- Navigation bar with Home, About, and Experience pages
+- Chatbot UI for resume Q&A
+- Portfolio cards with interactive hover effects
+
+## Pages
+
+### Main Landing Page (`src/app/page.js`)
+- Displays your name, tagline, and animated profile photo
+- Resume and contact buttons
+- Theme switch button for dark/light mode
+- Chatbot UI for resume queries
+
+### About Page (`src/app/aboutpage/page.js`)
+- Overview of your background, skills, and interests
+- Navigation via the navbar
+
+### Experience Page (`src/app/experiencepage/page.js`)
+- Timeline of work experience and roles
+- Animated timeline and interactive cards
+
+### Navbar (`src/components/ui/navbar.js`)
+- Fixed navigation bar with theme toggle
+- Adapts colors based on selected theme
+
+### Portfolio Card (`src/components/PortfolioCard.js`)
+- Displays project title, description, and link
+- Scales and changes color on hover
+
+## Theming
+- Uses `next-themes` and shadcn/ui for dynamic dark/light mode
+- All colors and backgrounds adapt automatically
 
 ## Getting Started
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
+3. Visit `http://localhost:3000` in your browser.
 
-First, run the development server:
+## Customization
+- Update profile photo in `public/profile.jpg`
+- Edit resume data in `src/app/api/chat/route.js`
+- Change theme colors in `src/app/globals.css`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Deployment
+- Deploy to Vercel or any platform supporting Next.js
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
