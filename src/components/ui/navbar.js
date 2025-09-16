@@ -10,7 +10,7 @@ import { Sun, Moon } from "lucide-react";
 import Link from "next/link";
 
 export function Navbar({ className }) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme("dark");
   const isDark = theme === "dark";
   return (
     <nav className={
