@@ -12,10 +12,21 @@ export default function Home() {
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const email = "tsumiksh@gmail.com"; // Replace with your actual email
+
+  const handleContactClick = () => {
+    if (!showEmail){
+      setShowEmail(true);
+      return
+    }
+    setShowEmail(false); 
+  };
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
   // Animation for profile photo
   const [imgVisible, setImgVisible] = useState(false);
   useEffect(() => {
@@ -117,7 +128,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            
+
             <div className="p-3 border-t border-gray-200 dark:border-gray-700 flex flex-col gap-2">
               <label className="font-semibold mb-1">
                 Choose a resume section
@@ -188,16 +199,16 @@ export default function Home() {
                 Resume
                 <span aria-hidden="true">↗</span>
               </a>
-              <a
-                href="/contact"
+              <button
+                onClick={handleContactClick}
                 className={`px-6 py-3 rounded-lg font-semibold border transition ${
                   isDark
                     ? "bg-transparent text-white border-white hover:bg-white hover:text-black"
                     : "bg-transparent text-black border-black hover:bg-black hover:text-white"
                 }`}
               >
-                Contact
-              </a>
+                {showEmail ? email : "Contact"}
+              </button>
             </div>
           </div>
         </div>
