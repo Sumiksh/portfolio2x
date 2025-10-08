@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
 
 // ==== RESUME DATA SPLIT BY SECTIONS ====
+const KEYWORDS_TO_SECTIONS = [
+  { keys: ['certifications','cert', 'aws', 'linkedin', 'datacamp'], sections: ['certifications'] },
+  { keys: ['experience', 'work', 'job', 'cibc', 'ontario', 'claret'], sections: ['experience'] },
+  { keys: ['education', 'degree', 'seneca', 'georgian'], sections: ['education'] },
+  { keys: ['projects','project', 'github', 'airbnb', 'portfolio', 'cnn', 'machine learning'], sections: ['projects'] },
+  { keys: ['skills','skill', 'stack', 'tools'], sections: ['skills'] },
+  { keys: ['summary', 'overview', 'profile'], sections: ['summary'] },
+];
+
 const RESUME = {
   summary: `
 Recent graduate and motivated Software Developer & Data Engineer with experience in Python, SQL,
@@ -59,79 +68,116 @@ DataCamp: OOP in Python, Intro to Python
   `,
 };
 
-// ==== SIMPLE ROUTING MAP ==== // extra functioniliy for 
-const KEYWORDS_TO_SECTIONS = [
-  { keys: ['certifications','cert', 'aws', 'linkedin', 'datacamp'], sections: ['certifications'] },
-  { keys: ['experience', 'work', 'job', 'cibc', 'ontario', 'claret'], sections: ['experience'] },
-  { keys: ['education', 'degree', 'seneca', 'georgian'], sections: ['education'] },
-  { keys: ['projects','project', 'github', 'airbnb', 'portfolio', 'cnn', 'machine learning'], sections: ['projects'] },
-  { keys: ['skills','skill', 'stack', 'tools'], sections: ['skills'] },
-  { keys: ['summary', 'overview', 'profile'], sections: ['summary'] },
-];
 
 // ==== SECTION PICKER ====
 function pickSections(userMsg) {
   const q = (userMsg || '').toLowerCase();
-  console.log('User message for section picking:', q);
   const selected = new Set();
+  
   for (const rule of KEYWORDS_TO_SECTIONS) {
-    // console.log('Checking rule:', rule);
     if (rule.keys.some(k => q.includes(k))) {
       rule.sections.forEach(s => selected.add(s));
     }
   }
-  // Only return matched sections, no fallback
+
   return Array.from(selected);
-}
-
-// ==== BUILD PROMPT ====
-function buildSystemPrompt(sectionNames) {
-  const joined = sectionNames
-    .filter(name => RESUME[name])
-    .map(name => `### ${name.toUpperCase()}\n${RESUME[name].trim()}`)
-    .join('\n\n');
-
-  return `
-You are an assistant that MUST answer only from the provided resume sections.
-If the answer is not in the resume, reply exactly:
-"This information is not available in the resume."
-
-RESUME CONTEXT:
-${joined}
-`;
 }
 
 // ==== MAIN HANDLER ====
 export async function POST(request) {
   try {
     const { message } = await request.json();
-    const apiKey = process.env.OPENROUTER_API_KEY;
 
+    // Find the sections that match the user's message
     const sections = pickSections(message);
-    const systemContent = buildSystemPrompt(sections);
+    console.log('Picked sections:', sections);
+    // Generate response based on hardcoded section responses
+    const responses = sections.map(section => RESUME[section] || 'This information is not available in the resume.');
 
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'deepseek/deepseek-chat-v3.1:free',
-        messages: [
-          { role: 'system', content: systemContent },
-          { role: 'user', content: message },
-        ],
-        temperature: 0.2,
-        max_tokens: 600,
-      }),
-    });
+    // Combine all responses for all matched sections
+    const reply = responses.join('\n\n') || 'No relevant sections found in the resume.';
 
-    const data = await res.json();
-    const reply = data.choices?.[0]?.message?.content || 'No response';
     return NextResponse.json({ reply, sectionsUsed: sections });
   } catch (error) {
     console.error('Error processing message:', error);
     return NextResponse.json({ reply: 'Error processing message.' }, { status: 400 });
   }
 }
+
+//*****THIS CODE FOR CHATBOT WITH OPENROUTER API *****//
+// // ==== SIMPLE ROUTING MAP ==== // extra functioniliy for 
+// const KEYWORDS_TO_SECTIONS = [
+//   { keys: ['certifications','cert', 'aws', 'linkedin', 'datacamp'], sections: ['certifications'] },
+//   { keys: ['experience', 'work', 'job', 'cibc', 'ontario', 'claret'], sections: ['experience'] },
+//   { keys: ['education', 'degree', 'seneca', 'georgian'], sections: ['education'] },
+//   { keys: ['projects','project', 'github', 'airbnb', 'portfolio', 'cnn', 'machine learning'], sections: ['projects'] },
+//   { keys: ['skills','skill', 'stack', 'tools'], sections: ['skills'] },
+//   { keys: ['summary', 'overview', 'profile'], sections: ['summary'] },
+// ];
+
+// // ==== SECTION PICKER ====
+// function pickSections(userMsg) {
+//   const q = (userMsg || '').toLowerCase();
+//   console.log('User message for section picking:', q);
+//   const selected = new Set();
+//   for (const rule of KEYWORDS_TO_SECTIONS) {
+//     // console.log('Checking rule:', rule);
+//     if (rule.keys.some(k => q.includes(k))) {
+//       rule.sections.forEach(s => selected.add(s));
+//     }
+//   }
+//   // Only return matched sections, no fallback
+//   return Array.from(selected);
+// }
+
+// // ==== BUILD PROMPT ====
+// function buildSystemPrompt(sectionNames) {
+//   const joined = sectionNames
+//     .filter(name => RESUME[name])
+//     .map(name => `### ${name.toUpperCase()}\n${RESUME[name].trim()}`)
+//     .join('\n\n');
+
+//   return `
+// You are an assistant that MUST answer only from the provided resume sections.
+// If the answer is not in the resume, reply exactly:
+// "This information is not available in the resume."
+
+// RESUME CONTEXT:
+// ${joined}
+// `;
+// }
+
+// // ==== MAIN HANDLER ====
+// export async function POST(request) {
+//   try {
+//     const { message } = await request.json();
+//     const apiKey = process.env.OPENROUTER_API_KEY;
+
+//     const sections = pickSections(message);
+//     const systemContent = buildSystemPrompt(sections);
+
+//     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+//       method: 'POST',
+//       headers: {
+//         'Authorization': `Bearer ${apiKey}`,
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         model: 'deepseek/deepseek-chat-v3.1:free',
+//         messages: [
+//           { role: 'system', content: systemContent },
+//           { role: 'user', content: message },
+//         ],
+//         temperature: 0.2,
+//         max_tokens: 600,
+//       }),
+//     });
+
+//     const data = await res.json();
+//     const reply = data.choices?.[0]?.message?.content || 'No response';
+//     return NextResponse.json({ reply, sectionsUsed: sections });
+//   } catch (error) {
+//     console.error('Error processing message:', error);
+//     return NextResponse.json({ reply: 'Error processing message.' }, { status: 400 });
+//   }
+// }
