@@ -203,8 +203,8 @@ export default function Home() {
                 onClick={handleContactClick}
                 className={`px-6 py-3 rounded-lg font-semibold border transition ${
                   isDark
-                    ? "bg-transparent text-white border-white hover:bg-white hover:text-black"
-                    : "bg-transparent text-black border-black hover:bg-black hover:text-white"
+                    ? "bg-white text-black border-gray-300 hover:bg-gray-100"
+                    : "bg-black text-white border-gray-800 hover:bg-gray-900"
                 }`}
               >
                 {showEmail ? email : "Contact"}
