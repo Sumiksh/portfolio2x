@@ -52,7 +52,11 @@ export default function Home() {
     <>
       <main
         className={`min-h-screen flex items-center justify-center ${
-          mounted ? (isDark ? "bg-[#18181b] text-white" : "bg-white text-black") : "bg-gray-100 text-gray-900"
+          mounted
+            ? isDark
+              ? "bg-[#18181b] text-white"
+              : "bg-white text-black"
+            : "bg-gray-100 text-gray-900"
         }`}
       >
         <Navbar />
@@ -63,14 +67,14 @@ export default function Home() {
             <div className="p-3 border-b border-gray-200 dark:border-gray-700 font-bold">
               Sumiksh Chatbot
             </div>
-            <div
+            {/* <div
               className="flex-1 p-3 overflow-y-auto"
               style={{ maxHeight: "250px" }}
             >
               {chatMessages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`mb-2 text-sm ${
+                  className={`mb-6 text-sm ${
                     msg.sender === "user" ? "text-right" : "text-left"
                   }`}
                 >
@@ -85,7 +89,35 @@ export default function Home() {
                   </span>
                 </div>
               ))}
+            </div> */}
+
+            <div
+              className="flex-1 p-3 overflow-y-auto"
+              style={{ maxHeight: "250px" }}
+            >
+              {chatMessages.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`mb-6 text-sm ${
+                    msg.sender === "user" ? "text-right" : "text-left"
+                  }`}
+                >
+                  {msg.text.split("\n").map((line, lineIdx) => (
+                    <div
+                      key={lineIdx}
+                      className={`${
+                        msg.sender === "user"
+                          ? "bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      } px-4 py-2 rounded mb-2`}
+                    >
+                      {line}
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
+            
             <div className="p-3 border-t border-gray-200 dark:border-gray-700 flex flex-col gap-2">
               <label className="font-semibold mb-1">
                 Choose a resume section

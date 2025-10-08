@@ -79,7 +79,6 @@ function pickSections(userMsg) {
       rule.sections.forEach(s => selected.add(s));
     }
   }
-
   return Array.from(selected);
 }
 
@@ -87,16 +86,13 @@ function pickSections(userMsg) {
 export async function POST(request) {
   try {
     const { message } = await request.json();
-
     // Find the sections that match the user's message
     const sections = pickSections(message);
     console.log('Picked sections:', sections);
     // Generate response based on hardcoded section responses
     const responses = sections.map(section => RESUME[section] || 'This information is not available in the resume.');
-
     // Combine all responses for all matched sections
     const reply = responses.join('\n\n') || 'No relevant sections found in the resume.';
-
     return NextResponse.json({ reply, sectionsUsed: sections });
   } catch (error) {
     console.error('Error processing message:', error);
