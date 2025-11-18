@@ -2,6 +2,57 @@
 
 A modern, theme-aware portfolio built with **Next.js**, **Tailwind CSS**, and **shadcn/ui**.
 
+## 🗂️ UML Diagram (Mermaid)
+
+```mermaid
+classDiagram
+    class App {
+        +Navbar navbar
+        +Page page
+        +AboutPage aboutPage
+        +ExperiencePage experiencePage
+        +PortfolioCard[] portfolioCards
+        +ChatbotUI chatbotUI
+    }
+    class Navbar {
+        +themeToggle()
+        +navigationLinks
+    }
+    class Page {
+        +profilePhoto
+        +resumeButton()
+        +themeSwitch()
+        +chatbotUI()
+    }
+    class AboutPage {
+        +background
+        +skills
+        +interests
+    }
+    class ExperiencePage {
+        +timeline
+        +roles
+        +animatedCards()
+    }
+    class PortfolioCard {
+        +title
+        +description
+        +link
+        +hoverEffect()
+    }
+    class ChatbotUI {
+        +askResume()
+        +showResponse()
+    }
+
+    App "1" *-- "1" Navbar
+    App "1" *-- "1" Page
+    App "1" *-- "1" AboutPage
+    App "1" *-- "1" ExperiencePage
+    App "1" *-- "*" PortfolioCard
+    App "1" *-- "1" ChatbotUI
+```
+
 ## ✨ Features
 
 - 📱 **Responsive landing page** with animated profile photo  
