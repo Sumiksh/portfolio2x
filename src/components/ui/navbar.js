@@ -68,7 +68,7 @@ export function Navbar({ className }) {
                   className={`flex items-center gap-2 transition hover:underline
                     ${mounted && isDark ? "text-white" : "text-black"}`}
                 >
-                  <FontAwesomeIcon icon={faHouse} />
+                  <FontAwesomeIcon icon={faHouse} className="text-purple-600 mr-2"/>
                   Home
                 </Link>
               </NavigationMenuLink>
@@ -81,7 +81,7 @@ export function Navbar({ className }) {
                   className={`flex items-center gap-2 transition hover:underline
                     ${mounted && isDark ? "text-white" : "text-black"}`}
                 >
-                  <FontAwesomeIcon icon={faUser} />
+                  <FontAwesomeIcon icon={faUser} className="text-purple-600 mr-2"/>
                   About
                 </Link>
               </NavigationMenuLink>
@@ -94,7 +94,7 @@ export function Navbar({ className }) {
                   className={`flex items-center gap-2 transition hover:underline
                     ${mounted && isDark ? "text-white" : "text-black"}`}
                 >
-                  <FontAwesomeIcon icon={faBriefcase} />
+                  <FontAwesomeIcon icon={faBriefcase} className="text-purple-600 mr-2"/>
                   Experience
                 </Link>
               </NavigationMenuLink>
