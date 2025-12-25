@@ -13,7 +13,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-  const email = "tsumiksh@gmail.com"; // Replace with your actual email
+  const email = "tsumiksh@gmail.com"; 
 
   const handleContactClick = () => {
     if (!showEmail){
@@ -78,30 +78,7 @@ export default function Home() {
             <div className="p-3 border-b border-gray-200 dark:border-gray-700 font-bold">
               Sumiksh Chatbot
             </div>
-            {/* <div
-              className="flex-1 p-3 overflow-y-auto"
-              style={{ maxHeight: "250px" }}
-            >
-              {chatMessages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`mb-6 text-sm ${
-                    msg.sender === "user" ? "text-right" : "text-left"
-                  }`}
-                >
-                  <span
-                    className={
-                      msg.sender === "user"
-                        ? "bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100 px-2 py-1 rounded"
-                        : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 rounded"
-                    }
-                  >
-                    {msg.text}
-                  </span>
-                </div>
-              ))}
-            </div> */}
-
+            
             <div
               className="flex-1 p-3 overflow-y-auto"
               style={{ maxHeight: "250px" }}
