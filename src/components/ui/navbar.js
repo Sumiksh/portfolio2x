@@ -35,32 +35,32 @@ export function Navbar({ className }) {
         ${className || ""}`}
     >
       <div className="max-w-4xl mx-auto flex items-center justify-between px-6 py-4">
-        
+
         {/* Logo */}
-<span
-  className={`font-extrabold text-2xl tracking-wide flex items-center gap-3 group cursor-pointer`}
->
-  {/* Icon with a pulse/glow effect on hover */}
-  <FontAwesomeIcon 
-    icon={faCode} 
-    className="text-purple-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" 
-  />
-  
-  <span className={`transition-all duration-300 transform group-hover:-translate-y-0.5
-    text-transparent bg-clip-text bg-gradient-to-r 
-    ${mounted && isDark 
-      ? "from-purple-400 via-fuchsia-300 to-white" 
-      : "from-purple-700 via-purple-900 to-black"
-    }`}
-  >
-    Sumiksh Portfolio
-  </span>
-</span>
+        <span
+          className={`font-extrabold text-2xl tracking-wide flex items-center gap-3 group cursor-pointer`}
+        >
+          {/* Icon with a pulse/glow effect on hover */}
+          <FontAwesomeIcon
+            icon={faCode}
+            className="text-purple-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
+          />
+
+          <span className={`transition-all duration-300 transform group-hover:-translate-y-0.5
+          text-transparent bg-clip-text bg-gradient-to-r 
+          ${mounted && isDark
+              ? "from-purple-400 via-fuchsia-300 to-white"
+              : "from-purple-700 via-purple-900 to-black"
+            }`}
+          >
+            Sumiksh Portfolio
+          </span>
+        </span>
 
         {/* Navigation */}
         <NavigationMenu>
           <NavigationMenuList className="flex gap-6">
-            
+
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
