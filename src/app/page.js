@@ -13,14 +13,14 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-  const email = "tsumiksh@gmail.com"; 
+  const email = "tsumiksh@gmail.com";
 
   const handleContactClick = () => {
-    if (!showEmail){
+    if (!showEmail) {
       setShowEmail(true);
       return
     }
-    setShowEmail(false); 
+    setShowEmail(false);
   };
 
   useEffect(() => {
@@ -62,13 +62,12 @@ export default function Home() {
   return (
     <>
       <main
-        className={`min-h-screen flex items-center justify-center ${
-          mounted
+        className={`min-h-screen flex items-center justify-center ${mounted
             ? isDark
               ? "bg-[#18181b] text-white"
               : "bg-white text-black"
             : "bg-gray-100 text-gray-900"
-        }`}
+          }`}
       >
         <Navbar />
         <div className="h-20" />
@@ -78,7 +77,7 @@ export default function Home() {
             <div className="p-3 border-b border-gray-200 dark:border-gray-700 font-bold">
               Sumiksh Chatbot
             </div>
-            
+
             <div
               className="flex-1 p-3 overflow-y-auto"
               style={{ maxHeight: "250px" }}
@@ -86,18 +85,16 @@ export default function Home() {
               {chatMessages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`mb-6 text-sm ${
-                    msg.sender === "user" ? "text-right" : "text-left"
-                  }`}
+                  className={`mb-6 text-sm ${msg.sender === "user" ? "text-right" : "text-left"
+                    }`}
                 >
                   {msg.text.split("\n").map((line, lineIdx) => (
                     <div
                       key={lineIdx}
-                      className={`${
-                        msg.sender === "user"
+                      className={`${msg.sender === "user"
                           ? "bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100"
                           : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                      } px-4 py-2 rounded mb-2`}
+                        } px-4 py-2 rounded mb-2`}
                     >
                       {line}
                     </div>
@@ -142,19 +139,29 @@ export default function Home() {
               alt="Profile Art"
               width={400}
               height={400}
-              className={`rounded-xl object-cover shadow-lg transition-all duration-700 ease-out ${
-                imgVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
-              }`}
+              className={`rounded-xl object-cover shadow-lg transition-all duration-700 ease-out ${imgVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
+                }`}
               priority
             />
           </div>
           {/* Right: Text */}
           <div className="w-1/2 flex flex-col justify-center items-start px-8">
-            <h1 className="text-5xl font-bold mb-6 leading-tight">
-              Turning Vision Into
+            <h1 className="text-4xl md:text-4xl font-extrabold mb-6 leading-[1.1] tracking-tight text-gray-900 dark:text-white">
+              Turning{" "}
+              <span className="relative inline-block group">
+                {/* The Pulsating Word */}
+                <span className="inline-block animate-pulse duration-[3000ms] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-500 to-indigo-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                  Vision
+                </span>
+
+                {/* Optional: A subtle underline that glows with it */}
+                <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full opacity-50 animate-pulse duration-[3000ms]"></span>
+              </span>
+              {" "}Into
               <br />
               Reality With Code And Design.
             </h1>
+
             <p className="mb-8 text-lg text-muted-foreground">
               As a skilled full-stack developer, I am dedicated to turning ideas
               into innovative web applications.
@@ -167,22 +174,20 @@ export default function Home() {
                 href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`px-6 py-3 rounded-lg font-semibold shadow border flex items-center gap-2 ${
-                  isDark
+                className={`px-6 py-3 rounded-lg font-semibold shadow border flex items-center gap-2 ${isDark
                     ? "bg-white text-black border-gray-300 hover:bg-gray-100"
                     : "bg-black text-white border-gray-800 hover:bg-gray-900"
-                }`}
+                  }`}
               >
                 Resume
                 <span aria-hidden="true">↗</span>
               </a>
               <button
                 onClick={handleContactClick}
-                className={`px-6 py-3 rounded-lg font-semibold border transition ${
-                  isDark
+                className={`px-6 py-3 rounded-lg font-semibold border transition ${isDark
                     ? "bg-white text-black border-gray-300 hover:bg-gray-100"
                     : "bg-black text-white border-gray-800 hover:bg-gray-900"
-                }`}
+                  }`}
               >
                 {showEmail ? email : "Contact"}
               </button>
