@@ -2,7 +2,9 @@
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Navbar } from "../components/ui/navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import * as THREE from "three";
+import CLOUDS from "vanta/dist/vanta.dots.min";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -10,15 +12,63 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const email = "tsumiksh@gmail.com";
+
+  const [vantaEffect, setVantaEffect] = useState(null);
+  const vantaRef = useRef(null);
+  // const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Only initialize Vanta on the client
+    if (!vantaEffect && mounted) {
+      setVantaEffect(
+        CLOUDS({
+          el: vantaRef.current,
+          THREE: THREE,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.0,
+          minWidth: 200.0,
+          // Default Light Mode Colors
+          backgroundColor: 0xffffff,
+          skyColor: 0xadc1de,
+          cloudColor: 0xdae2e9,
+          cloudShadowColor: 0x7687a2,
+          sunColor: 0xff9911,
+          sunGlareColor: 0xff6633,
+          sunlightColor: 0xff9933,
+        })
+      );
+    }
+
+    // Dynamic Color Update when theme changes
+    if (vantaEffect) {
+      const isDark = resolvedTheme === "dark" || theme === "dark";
+      vantaEffect.setOptions({
+        backgroundColor: isDark ? 0x000000 : 0xffffff,
+        skyColor: isDark ? 0x050505 : 0xadc1de,
+        cloudColor: isDark ? 0x22123a : 0xdae2e9, // Subtle purple clouds in dark mode
+        cloudShadowColor: isDark ? 0x000000 : 0x7687a2,
+        sunColor: isDark ? 0x220033 : 0xff9911,
+      });
+    }
+
+    return () => {
+      if (vantaEffect) vantaEffect.destroy();
+    };
+  }, [vantaEffect, mounted, theme, resolvedTheme]);
 
   const handleContactClick = () => {
     if (!showEmail) {
@@ -37,7 +87,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => setImgVisible(true), 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [mounted]);
 
   const sendMessage = async () => {
     if (!chatInput.trim()) return;
@@ -64,17 +114,11 @@ export default function Home() {
     setLoading(false);
   };
 
-  return (
-    <>
-      <main
-        className={`min-h-screen flex items-center justify-center ${mounted
-          ? isDark
-            ? "bg-[#18181b] text-white"
-            : "bg-white text-black"
-          : "bg-gray-100 text-gray-900"
-          }`}
-      >
+  if (!mounted) return <div className="min-h-screen bg-gray-100" />;
 
+  return (
+    <div ref={vantaRef} className="min-h-screen bg-white text-black dark:bg-[#000000] dark:text-white">
+      <main className="relative z-10 w-full">
         <Navbar />
         <div className="h-20" />
         {/* Chatbot UI */}
@@ -175,26 +219,25 @@ export default function Home() {
               <a href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center gap-2 group
-              ${isDark
-                    ? "bg-transparent text-white border-2 border-purple-500/50 hover:border-purple-400 hover:bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.1)]"
-                    : "bg-transparent text-purple-900 border-2 border-purple-700/50 hover:border-purple-700 hover:bg-purple-50"
-                  }`}
+                className="px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center gap-2 group bg-transparent 
+    /* Light Mode Styles */
+    text-purple-900 border-2 border-purple-700/50 hover:border-purple-700 hover:bg-purple-50 
+    /* Dark Mode Styles */
+    dark:text-white dark:border-purple-500/50 dark:hover:border-purple-400 dark:hover:bg-purple-500/10 dark:shadow-[0_0_15px_rgba(168,85,247,0.1)]"
               >
-                <FontAwesomeIcon icon={faFileArrowDown} className="text-sm transition-transform group-hover:-translate-y-1"/>
+                <FontAwesomeIcon icon={faFileArrowDown} className="text-sm transition-transform group-hover:-translate-y-1" />
                 <span className="tracking-wide">Resume</span>
                 <span className="text-lg transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
                   ↗
                 </span>
               </a>
-
               <button
                 onClick={handleContactClick}
-                className={`px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg
-              ${isDark
-                    ? "bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white shadow-purple-500/20 hover:shadow-purple-500/40 border border-purple-400/30"
-                    : "bg-gradient-to-r from-purple-700 to-indigo-600 text-white shadow-purple-900/20 hover:shadow-purple-900/40"
-                  }`}
+                className="px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg text-white
+                /* Light Mode Gradient & Shadow */
+                bg-gradient-to-r from-purple-700 to-indigo-600 shadow-purple-900/20 hover:shadow-purple-900/40
+                /* Dark Mode Gradient & Shadow */
+                dark:from-purple-600 dark:to-fuchsia-500 dark:shadow-purple-500/20 dark:hover:shadow-purple-500/40 dark:border dark:border-purple-400/30"
               >
                 <span className="flex items-center gap-2">
                   {!showEmail && <FontAwesomeIcon icon={faEnvelope} className="text-sm" />}
@@ -218,6 +261,6 @@ export default function Home() {
       >
         {chatOpen ? "Close Chat" : "AI Resume Chat"}
       </button>
-    </>
+    </div>
   );
 }
