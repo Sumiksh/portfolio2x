@@ -4,7 +4,6 @@ import { useTheme } from "next-themes";
 import { Navbar } from "../components/ui/navbar";
 import { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
-import CLOUDS from "vanta/dist/vanta.dots.min";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -28,47 +27,59 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
   useEffect(() => {
-    // Only initialize Vanta on the client
-    if (!vantaEffect && mounted) {
-      setVantaEffect(
-        CLOUDS({
-          el: vantaRef.current,
-          THREE: THREE,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          minHeight: 200.0,
-          minWidth: 200.0,
-          // Default Light Mode Colors
-          backgroundColor: 0xffffff,
-          skyColor: 0xadc1de,
-          cloudColor: 0xdae2e9,
-          cloudShadowColor: 0x7687a2,
-          sunColor: 0xff9911,
-          sunGlareColor: 0xff6633,
-          sunlightColor: 0xff9933,
-        })
-      );
-    }
+    let effect = null;
 
-    // Dynamic Color Update when theme changes
-    if (vantaEffect) {
-      const isDark = resolvedTheme === "dark" || theme === "dark";
-      vantaEffect.setOptions({
-        backgroundColor: isDark ? 0x000000 : 0xffffff,
-        skyColor: isDark ? 0x050505 : 0xadc1de,
-        cloudColor: isDark ? 0x22123a : 0xdae2e9, // Subtle purple clouds in dark mode
-        cloudShadowColor: isDark ? 0x000000 : 0x7687a2,
-        sunColor: isDark ? 0x220033 : 0xff9911,
-      });
+    const initVanta = async () => {
+      // 1. Import TRUNK and p5
+      const TRUNK = (await import("vanta/dist/vanta.trunk.min")).default;
+      const p5 = (await import("p5")).default;
+
+      if (!vantaEffect && vantaRef.current) {
+        const isDark = resolvedTheme === "dark" || theme === "dark";
+
+        try {
+          effect = TRUNK({
+            el: vantaRef.current,
+            p5: p5, 
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 400.0,
+            minWidth: 400.0,
+            scale: 2.0,
+            scaleMobile: 1.0,
+            // Colors for the "Trunk" organic look
+            color: isDark ? 0x9333ea : 0x4338ca,
+            backgroundColor: isDark ? 0x000000 : 0xffffff,
+            spacing: 2.0,
+            chaos: 4.0,
+          });
+          setVantaEffect(effect);
+        } catch (err) {
+          console.error("Vanta Trunk failed:", err);
+        }
+      }
+    };
+
+    if (mounted) {
+      initVanta();
     }
 
     return () => {
       if (vantaEffect) vantaEffect.destroy();
     };
-  }, [vantaEffect, mounted, theme, resolvedTheme]);
+  }, [mounted, vantaEffect]);
+
+  useEffect(() => {
+    if (vantaEffect && typeof vantaEffect.setOptions === "function") {
+      const isDark = resolvedTheme === "dark" || theme === "dark";
+      vantaEffect.setOptions({
+        color: isDark ? 0x9333ea : 0x4338ca,
+        backgroundColor: isDark ? 0x000000 : 0xffffff,
+      });
+    }
+  }, [theme, resolvedTheme, vantaEffect]);
 
   const handleContactClick = () => {
     if (!showEmail) {
