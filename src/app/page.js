@@ -3,6 +3,11 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Navbar } from "../components/ui/navbar";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faFileArrowDown
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const { theme } = useTheme();
@@ -63,10 +68,10 @@ export default function Home() {
     <>
       <main
         className={`min-h-screen flex items-center justify-center ${mounted
-            ? isDark
-              ? "bg-[#18181b] text-white"
-              : "bg-white text-black"
-            : "bg-gray-100 text-gray-900"
+          ? isDark
+            ? "bg-[#18181b] text-white"
+            : "bg-white text-black"
+          : "bg-gray-100 text-gray-900"
           }`}
       >
         <Navbar />
@@ -92,8 +97,8 @@ export default function Home() {
                     <div
                       key={lineIdx}
                       className={`${msg.sender === "user"
-                          ? "bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100"
-                          : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        ? "bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         } px-4 py-2 rounded mb-2`}
                     >
                       {line}
@@ -153,8 +158,7 @@ export default function Home() {
                 <span className="inline-block animate-pulse duration-[3000ms] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-500 to-indigo-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.2)]">
                   Vision
                 </span>
-
-                {/* Optional: A subtle underline that glows with it */}
+                {/*An underline that glows with it */}
                 <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full opacity-50 animate-pulse duration-[3000ms]"></span>
               </span>
               {" "}Into
@@ -170,26 +174,34 @@ export default function Home() {
               in React.js and web development.
             </p>
             <div className="flex gap-4">
-              <a
-                href="/resume.pdf"
+              <a href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`px-6 py-3 rounded-lg font-semibold shadow border flex items-center gap-2 ${isDark
-                    ? "bg-white text-black border-gray-300 hover:bg-gray-100"
-                    : "bg-black text-white border-gray-800 hover:bg-gray-900"
+                className={`px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center gap-2 group
+              ${isDark
+                    ? "bg-transparent text-white border-2 border-purple-500/50 hover:border-purple-400 hover:bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.1)]"
+                    : "bg-transparent text-purple-900 border-2 border-purple-700/50 hover:border-purple-700 hover:bg-purple-50"
                   }`}
               >
-                Resume
-                <span aria-hidden="true">↗</span>
+                <FontAwesomeIcon icon={faFileArrowDown} className="text-sm transition-transform group-hover:-translate-y-1"/>
+                <span className="tracking-wide">Resume</span>
+                <span className="text-lg transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
+                  ↗
+                </span>
               </a>
+
               <button
                 onClick={handleContactClick}
-                className={`px-6 py-3 rounded-lg font-semibold border transition ${isDark
-                    ? "bg-white text-black border-gray-300 hover:bg-gray-100"
-                    : "bg-black text-white border-gray-800 hover:bg-gray-900"
+                className={`px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg
+              ${isDark
+                    ? "bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white shadow-purple-500/20 hover:shadow-purple-500/40 border border-purple-400/30"
+                    : "bg-gradient-to-r from-purple-700 to-indigo-600 text-white shadow-purple-900/20 hover:shadow-purple-900/40"
                   }`}
               >
-                {showEmail ? email : "Contact"}
+                <span className="flex items-center gap-2">
+                  {!showEmail && <FontAwesomeIcon icon={faEnvelope} className="text-sm" />}
+                  {showEmail ? email : "Get In Touch"}
+                </span>
               </button>
             </div>
           </div>
