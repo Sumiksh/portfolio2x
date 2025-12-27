@@ -206,8 +206,11 @@ export default function Home() {
               <br />
               Reality With Code And Design.
             </h1>
-
-            <p className="mb-8 text-lg text-muted-foreground">
+            <p className="mb-8 text-lg font-medium leading-relaxed
+              /* Light Mode: Deep Indigo/Gray with white glow */
+              text-slate-800 drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]
+              /* Dark Mode: Pure White with black glow */
+              dark:text-white dark:drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
               As a skilled full-stack developer, I am dedicated to turning ideas
               into innovative web applications.
               <br />
