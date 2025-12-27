@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Navbar } from "../components/ui/navbar";
 import { useState, useEffect, useRef } from "react";
-import * as THREE from "three";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -18,15 +17,17 @@ export default function Home() {
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
+  const [imgVisible, setImgVisible] = useState(false);
   const email = "tsumiksh@gmail.com";
 
   const [vantaEffect, setVantaEffect] = useState(null);
   const vantaRef = useRef(null);
-  // const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+// UseEffect to initialize and re-initialize on theme change
   useEffect(() => {
     let effect = null;
 
@@ -35,25 +36,27 @@ export default function Home() {
       const TRUNK = (await import("vanta/dist/vanta.trunk.min")).default;
       const p5 = (await import("p5")).default;
 
-      if (!vantaEffect && vantaRef.current) {
-        const isDark = resolvedTheme === "dark" || theme === "dark";
+      if (vantaRef.current) {
+        // Clear previous effect to ensure background color updates
+        if (vantaEffect) vantaEffect.destroy();
+
+        const isDark = resolvedTheme === "dark";
 
         try {
           effect = TRUNK({
             el: vantaRef.current,
-            p5: p5, 
+            p5: p5, // Trunk requires p5
             mouseControls: true,
             touchControls: true,
-            gyroControls: false,
-            minHeight: 400.0,
-            minWidth: 400.0,
+            minHeight: 200.0,
+            minWidth: 200.0,
             scale: 2.0,
             scaleMobile: 1.0,
-            // Colors for the "Trunk" organic look
+            // Lighter/Subtle Colors
             color: isDark ? 0x9333ea : 0x4338ca,
             backgroundColor: isDark ? 0x000000 : 0xffffff,
             spacing: 2.0,
-            chaos: 4.0,
+            chaos: 3.0, // Reduced chaos for a cleaner look
           });
           setVantaEffect(effect);
         } catch (err) {
@@ -67,20 +70,11 @@ export default function Home() {
     }
 
     return () => {
-      if (vantaEffect) vantaEffect.destroy();
+      if (effect) effect.destroy();
     };
-  }, [mounted, vantaEffect]);
-
-  useEffect(() => {
-    if (vantaEffect && typeof vantaEffect.setOptions === "function") {
-      const isDark = resolvedTheme === "dark" || theme === "dark";
-      vantaEffect.setOptions({
-        color: isDark ? 0x9333ea : 0x4338ca,
-        backgroundColor: isDark ? 0x000000 : 0xffffff,
-      });
-    }
-  }, [theme, resolvedTheme, vantaEffect]);
-
+    // Re-run whenever theme changes to force a fresh canvas
+  }, [mounted, resolvedTheme]); 
+  
   const handleContactClick = () => {
     if (!showEmail) {
       setShowEmail(true);
@@ -89,12 +83,6 @@ export default function Home() {
     setShowEmail(false);
   };
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Animation for profile photo
-  const [imgVisible, setImgVisible] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => setImgVisible(true), 300);
     return () => clearTimeout(timer);
@@ -128,7 +116,7 @@ export default function Home() {
   if (!mounted) return <div className="min-h-screen bg-gray-100" />;
 
   return (
-    <div ref={vantaRef} className="min-h-screen bg-white text-black dark:bg-[#000000] dark:text-white">
+    <div ref={vantaRef} className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <main className="relative z-10 w-full">
         <Navbar />
         <div className="h-20" />
