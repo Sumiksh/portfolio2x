@@ -74,6 +74,7 @@ export default function Home() {
           : "bg-gray-100 text-gray-900"
           }`}
       >
+
         <Navbar />
         <div className="h-20" />
         {/* Chatbot UI */}
@@ -83,10 +84,7 @@ export default function Home() {
               Sumiksh Chatbot
             </div>
 
-            <div
-              className="flex-1 p-3 overflow-y-auto"
-              style={{ maxHeight: "250px" }}
-            >
+            <div className="flex-1 p-3 overflow-y-auto" style={{ maxHeight: "250px" }}>
               {chatMessages.map((msg, idx) => (
                 <div
                   key={idx}
