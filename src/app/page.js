@@ -15,7 +15,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [showEmail, setShowEmail] = useState(false)
   const email = "tsumiksh@gmail.com"
-  const [imgVisible, setImgVisible] = useState(false) // Declare imgVisible
+  const [imgVisible, setImgVisible] = useState(false)
 
   const [vantaEffect, setVantaEffect] = useState(null)
   const vantaRef = useRef(null)
@@ -25,6 +25,7 @@ export default function Home() {
 
   const [statsVisible, setStatsVisible] = useState(false)
   const statsRef = useRef(null)
+
   const [counters, setCounters] = useState({
     projects: 0,
     experience: 0,
@@ -145,24 +146,20 @@ export default function Home() {
 
   useEffect(() => {
     if (!statsVisible) return
-
     const targets = {
       projects: 10,
       experience: 3,
       clients: 2,
       contributions: 500,
     }
-
-    const duration = 2000 // 2 seconds
+    const duration = 1000
     const steps = 60
     const increment = duration / steps
-
     let currentStep = 0
 
     const timer = setInterval(() => {
       currentStep++
       const progress = currentStep / steps
-
       setCounters({
         projects: Math.floor(targets.projects * progress),
         experience: Math.floor(targets.experience * progress),
@@ -175,7 +172,6 @@ export default function Home() {
         clearInterval(timer)
       }
     }, increment)
-
     return () => clearInterval(timer)
   }, [statsVisible])
 

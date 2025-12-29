@@ -1,173 +1,232 @@
-'use client';
-import { Navbar } from "@/components/ui/navbar";
-import PortfolioCard from "@/components/PortfolioCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCode, faServer, faChartLine, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+"use client"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  faCode,
+  faServer,
+  faDatabase,
+  faBrain,
+  faVideo,
+  faChartLine,
+  faFilePdf,
+  faArrowUpRightFromSquare,
+} from "@fortawesome/free-solid-svg-icons"
+import { Navbar } from "@/components/ui/navbar"
 
 export default function AboutPage() {
+  const projects = [
+    {
+      id: 1,
+      category: "Web Development",
+      title: "Legacy Portfolio V1",
+      description:
+        "A foundational project showcasing my early mastery of responsive design and UI layout. This version represents my transition into full-stack development and serves as the architectural predecessor to my current site.",
+      icon: faCode,
+      tags: ["React", "Next.js", "Tailwind"],
+      link: "https://portfolio-five-gamma-25.vercel.app/",
+      github: "https://github.com/Sumiksh/portfolio.git",
+      gradient: "from-blue-500/10 to-cyan-500/10",
+      borderColor: "border-blue-500/20",
+      iconColor: "text-blue-500",
+    },
+    {
+      id: 2,
+      category: "Data Analytics",
+      title: "Seattle Airbnb Insights",
+      description:
+        "An interactive data visualization project analyzing price trends, neighborhood demand, and seasonal availability. Created high-impact dashboards to provide data-driven investment recommendations for the Seattle market.",
+      icon: faChartLine,
+      tags: ["Tableau", "Analytics", "Visualization"],
+      link: "https://public.tableau.com/app/profile/sumiksh.trehan/viz/seattleairbnbrecommendation/Dashboard1",
+      gradient: "from-emerald-500/10 to-teal-500/10",
+      borderColor: "border-emerald-500/20",
+      iconColor: "text-emerald-500",
+    },
+    {
+      id: 3,
+      category: "Computer Vision",
+      title: "Sports Motion Detection & Tracking",
+      description:
+        "Built a video processing pipeline using OpenCV and classical computer vision techniques. Features robust motion tracking and object detection designed to analyze player movement across dynamic sports footage.",
+      icon: faVideo,
+      tags: ["OpenCV", "Python", "Computer Vision"],
+      link: "https://github.com/Sumiksh/dps920finalproject.git",
+      gradient: "from-purple-500/10 to-pink-500/10",
+      borderColor: "border-purple-500/20",
+      iconColor: "text-purple-500",
+    },
+    {
+      id: 4,
+      category: "Machine Learning",
+      title: "AI/ML Model Suite",
+      description:
+        "A collection of predictive models ranging from housing price regression to complex image classification. Implemented using Python, Scikit-learn, and TensorFlow, utilizing KNN and CNN architectures for high accuracy.",
+      icon: faBrain,
+      tags: ["TensorFlow", "Scikit-learn", "Neural Networks"],
+      link: "https://github.com/Sumiksh/aimodels",
+      gradient: "from-orange-500/10 to-red-500/10",
+      borderColor: "border-orange-500/20",
+      iconColor: "text-orange-500",
+    },
+    {
+      id: 5,
+      category: "Full Stack",
+      title: "E-Commerce Platform",
+      description:
+        "A scalable web application featuring a decoupled architecture. Built with a React frontend for dynamic UI and a Node.js/Express backend for secure RESTful API management and MongoDB integration.",
+      icon: faServer,
+      tags: ["MERN Stack", "REST API", "MongoDB"],
+      frontend: "https://github.com/Kush10022/pswFrontend.git",
+      backend: "https://github.com/BTS-2023-2024/Group_08",
+      gradient: "from-indigo-500/10 to-blue-500/10",
+      borderColor: "border-indigo-500/20",
+      iconColor: "text-indigo-500",
+    },
+    {
+      id: 6,
+      category: "Business Intelligence",
+      title: "US Population Analytics",
+      description:
+        "A comprehensive demographic study utilizing Power BI to visualize population trends, migration patterns, and economic indicators across US regions.",
+      icon: faDatabase,
+      tags: ["Power BI", "Data Modeling", "BI"],
+      link: "/USPopulation.pdf",
+      isPDF: true,
+      gradient: "from-rose-500/10 to-pink-500/10",
+      borderColor: "border-rose-500/20",
+      iconColor: "text-rose-500",
+    },
+  ]
+
   return (
-    <div className="min-h-screen w-full transition-colors duration-300 bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <div className="h-20" />
-      <main className="max-w-4xl mx-auto py-12 px-4">
-        <div className="text-center mb-12">
-          <span className="px-20 py-2.5 rounded-full text-xl font-bold tracking-widest uppercase bg-purple-500/10 text-purple-500 border border-purple-500/20">
-            My Work
-          </span>
-        </div>
-        <Accordion type="single" collapsible className="mb-8">
-          <AccordionItem value="project1" className="border-b border-gray-200 dark:border-gray-800">
-            <AccordionTrigger className="hover:no-underline py-4">
-              <span className="text-lg font-semibold hover:text-purple-500 transition-colors">
-                Legacy Portfolio V1
-              </span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <PortfolioCard
-                title="Legacy Portfolio V1"
-                description="A foundational project showcasing my early mastery of responsive design and UI layout. This version represents my transition into full-stack development and serves as the architectural predecessor to my current site."
-                link="https://portfolio-five-gamma-25.vercel.app/"
-                github="https://portfolio-five-gamma-25.vercel.app/"
-              />
 
-              {/* If your PortfolioCard DOES NOT have a github prop, use this fallback: */}
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <a
-                  href="https://github.com/Sumiksh/portfolio.git"
-                  target="_blank"
-                  className="flex items-center justify-center gap-2 px-4 py-2 border border-purple-500/30 bg-purple-500/5 hover:bg-purple-500/10 text-purple-500 rounded-lg transition-all text-sm font-medium"
+      {/* Projects Grid */}
+      <section className="max-w-5xl mx-auto px-6 py-2 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-4">
+          {projects.map((project, index) => (
+            <article
+              key={project.id}
+              className={`group relative overflow-hidden rounded-2xl border ${project.borderColor} bg-gradient-to-br ${project.gradient} p-8 md:p-10 transition-all duration-300 hover:shadow-2xl hover:shadow-${project.iconColor}/10 hover:-translate-y-1`}
+            >
+              {/* Category Badge */}
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  {project.category}
+                </span>
+                <div
+                  className={`flex items-center justify-center w-12 h-12 rounded-xl bg-background/50 backdrop-blur-sm border ${project.borderColor} ${project.iconColor}`}
                 >
-                  <FontAwesomeIcon icon={faCode} className="text-xs" />
-                  Repository
-                </a>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="project2" className="border-b border-gray-200 dark:border-gray-800">
-            <AccordionTrigger className="hover:no-underline py-4">
-              <span className="text-lg font-semibold hover:text-purple-500 transition-colors">
-                Seattle Airbnb Insights - Tableau
-              </span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <PortfolioCard
-                title="Seattle Airbnb Recommendation"
-                description="An interactive data visualization project analyzing price trends, neighborhood demand, and seasonal availability. Created high-impact dashboards to provide data-driven investment recommendations for the Seattle market."
-                link="https://public.tableau.com/app/profile/sumiksh.trehan/viz/seattleairbnbrecommendation/Dashboard1"
-              />
-            </AccordionContent>
-          </AccordionItem>
-
-          {/* Project 3: Computer Vision */}
-          <AccordionItem value="project3" className="border-b border-gray-200 dark:border-gray-800">
-            <AccordionTrigger className="hover:no-underline py-4">
-              <span className="text-lg font-semibold hover:text-purple-500 transition-colors">
-                Sports Motion Detection & Tracking
-              </span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <PortfolioCard
-                title="Sports Motion Detection and Tracking"
-                description="Built a video processing pipeline using OpenCV and classical computer vision techniques. Features robust motion tracking and object detection designed to analyze player movement across dynamic sports footage."
-                link="https://github.com/Sumiksh/dps920finalproject.git"
-              />
-            </AccordionContent>
-          </AccordionItem>
-
-          {/* Project 4: AI/ML Models */}
-          <AccordionItem value="project4" className="border-b border-gray-200 dark:border-gray-800">
-            <AccordionTrigger className="hover:no-underline py-4">
-              <span className="text-lg font-semibold hover:text-purple-500 transition-colors">
-                Machine Learning: Regression & CNNs
-              </span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <PortfolioCard
-                title="AI/ML Model Suite"
-                description="A collection of predictive models ranging from housing price regression to complex image classification. Implemented using Python, Scikit-learn, and TensorFlow, utilizing KNN and CNN architectures for high accuracy."
-                link="https://github.com/Sumiksh/aimodels"
-              />
-            </AccordionContent>
-          </AccordionItem>
-
-          {/* Project 5: Full Stack Web Application */}
-          <AccordionItem value="project5" className="border-b border-gray-200 dark:border-gray-800">
-            <AccordionTrigger className="hover:no-underline py-4">
-              <span className="text-lg font-semibold hover:text-purple-500 transition-colors">
-                Full Stack E-Commerce Platform - MERN
-              </span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <PortfolioCard
-                title="Full Stack E-Commerce Platform"
-                description="A scalable web application featuring a decoupled architecture. Built with a React frontend for dynamic UI and a Node.js/Express backend for secure RESTful API management and MongoDB integration."
-                link="https://your-live-demo-link.com" // Main Live Link
-              />
-
-              {/* Dual GitHub Links Section */}
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <a
-                  href="https://github.com/Kush10022/pswFrontend.git"
-                  target="_blank"
-                  className="flex items-center justify-center gap-2 px-4 py-2 border border-purple-500/30 bg-purple-500/5 hover:bg-purple-500/10 text-purple-500 rounded-lg transition-all text-sm font-medium"
-                >
-                  <FontAwesomeIcon icon={faCode} className="text-xs" />
-                  Frontend Repository
-                </a>
-
-                <a
-                  href="https://github.com/BTS-2023-2024/Group_08"
-                  target="_blank"
-                  className="flex items-center justify-center gap-2 px-4 py-2 border border-purple-500/30 bg-purple-500/5 hover:bg-purple-500/10 text-purple-500 rounded-lg transition-all text-sm font-medium"
-                >
-                  <FontAwesomeIcon icon={faServer} className="text-xs" />
-                  Backend Repository
-                </a>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-
-          {/* Project 6: Power BI Data Analytics */}
-          <AccordionItem value="project6" className="border-b border-gray-200 dark:border-gray-800">
-            <AccordionTrigger className="hover:no-underline py-4">
-              <span className="text-lg font-semibold hover:text-purple-500 transition-colors">
-                US Population Analytics Dashboard - Power BI
-              </span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="space-y-4">
-                {/* A 'Fancy' PDF Action Card */}
-                <div className="p-6 border-2 border-dashed border-purple-500/30 rounded-xl bg-purple-500/5 flex flex-col items-center text-center">
-                  <FontAwesomeIcon icon={faFilePdf} className="text-4xl text-red-500 mb-3" />
-                  <h4 className="font-bold text-lg">Full Analytics Report</h4>
-                  <p className="text-sm text-gray-500 mb-4">View the complete US Population Power BI Dashboard in PDF format.</p>
-
-                  <a
-                    href="/USPopulation.pdf"
-                    target="_blank"
-                    className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition-all font-medium shadow-lg shadow-purple-500/20"
-                  >
-                    Open Report PDF
-                  </a>
+                  <FontAwesomeIcon icon={project.icon} className="text-lg" />
                 </div>
-
-                <PortfolioCard
-                  title="US Population Power BI Dashboard"
-                  description="A detailed Power BI demographic study. Click the button above to view the full report documentation."
-                  link="/USPopulation.pdf"
-                />
               </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </main>
+
+              {/* Title & Description */}
+              <h3 className="text-2xl md:text-2xl font-bold mb-4 text-balance">{project.title}</h3>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-pretty">
+                {project.description}
+              </p>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 text-xs font-medium rounded-full bg-background/60 backdrop-blur-sm border border-border"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Action Links */}
+              <div className="flex flex-wrap gap-3">
+                {project.isPDF ? (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-background/80 backdrop-blur-sm border ${project.borderColor} ${project.iconColor} hover:bg-background transition-all font-medium text-sm group/btn`}
+                  >
+                    <FontAwesomeIcon icon={faFilePdf} className="text-red-500" />
+                    View Report
+                    <FontAwesomeIcon
+                      icon={faArrowUpRightFromSquare}
+                      className="text-xs opacity-50 group-hover/btn:opacity-100 transition-opacity"
+                    />
+                  </a>
+                ) : (
+                  <>
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-background/80 backdrop-blur-sm border ${project.borderColor} ${project.iconColor} hover:bg-background transition-all font-medium text-sm group/btn`}
+                      >
+                        View Project
+                        <FontAwesomeIcon
+                          icon={faArrowUpRightFromSquare}
+                          className="text-xs opacity-50 group-hover/btn:opacity-100 transition-opacity"
+                        />
+                      </a>
+                    )}
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-background/80 backdrop-blur-sm border border-border hover:bg-background transition-all font-medium text-sm"
+                      >
+                        <FontAwesomeIcon icon={faCode} />
+                        Source Code
+                      </a>
+                    )}
+                    {project.frontend && (
+                      <>
+                        <a
+                          href={project.frontend}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-background/80 backdrop-blur-sm border border-border hover:bg-background transition-all font-medium text-sm"
+                        >
+                          <FontAwesomeIcon icon={faCode} />
+                          Frontend
+                        </a>
+                        <a
+                          href={project.backend}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-background/80 backdrop-blur-sm border border-border hover:bg-background transition-all font-medium text-sm"
+                        >
+                          <FontAwesomeIcon icon={faServer} />
+                          Backend
+                        </a>
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer CTA */}
+      <section className="border-t border-border">
+        <div className="max-w-6xl mx-auto px-6 py-16 text-center">
+          <p className="text-muted-foreground text-lg mb-2">Want to see more?</p>
+          <a
+            href="https://github.com/Sumiksh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+          >
+            Visit my GitHub profile
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-sm" />
+          </a>
+        </div>
+      </section>
     </div>
-  );
+  )
 }
