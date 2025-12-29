@@ -8,48 +8,30 @@ A modern, theme-aware portfolio built with **Next.js**, **Tailwind CSS**, and **
 classDiagram
     class App {
         +Navbar navbar
-        +Page page
-        +AboutPage aboutPage
-        +ExperiencePage experiencePage
-        +PortfolioCard[] portfolioCards
-        +ChatbotUI chatbotUI
-    }
-    class Navbar {
-        +themeToggle()
-        +navigationLinks
+        +VantaBackground vantaEffect
+        +ChatbotLogic chatbot
     }
     class Page {
-        +profilePhoto
-        +resumeButton()
-        +themeSwitch()
-        +chatbotUI()
+        +IntersectionObserver statsTracker
+        +IntersectionObserver skillsTracker
+        +CounterLogic animatedStats
     }
     class AboutPage {
-        +background
-        +skills
-        +interests
-    }
-    class ExperiencePage {
-        +timeline
-        +roles
-        +animatedCards()
-    }
-    class PortfolioCard {
-        +title
-        +description
-        +link
-        +hoverEffect()
+        +Timeline experience
+        +TechStack grid
     }
     class ChatbotUI {
-        +askResume()
-        +showResponse()
+        +FetchAPI(message)
+        +AutoScroll()
+        +SectionSelection()
+    }
+    class Assets {
+        +ResumePDF
+        +ProfileImage
     }
 
     App "1" *-- "1" Navbar
     App "1" *-- "1" Page
-    App "1" *-- "1" AboutPage
-    App "1" *-- "1" ExperiencePage
-    App "1" *-- "*" PortfolioCard
     App "1" *-- "1" ChatbotUI
 ```
 
@@ -65,27 +47,33 @@ classDiagram
 
 ## 📄 Pages
 
-### 🏠 Main Landing Page [`src/app/page.js`]
-- Displays your name, tagline, and animated profile photo
-- Resume and contact buttons
-- Theme switch button for dark/light mode
-- Chatbot UI for resume queries
+🏠 Main Home Page [src/app/page.js]
+- Vanta.js Immersive Background: Features the "Trunk" effect powered by three.js and p5.js. It creates an interactive, organic web of lines that responds to mouse movement and touch.
 
-### 👤 About Page [`src/app/aboutpage/page.js`]
-- Overview of your background, skills, and interests
-- Navigation via the navbar
+- Theme-Reactive Visuals: The Vanta effect is tightly coupled with the resolvedTheme. It dynamically updates hex colors for both the lines (0x9333ea for dark, 0x4338ca for light) and the background to ensure a seamless transition between light and dark modes.
 
-### 💼 Experience Page [`src/app/experiencepage/page.js`]
-- Timeline of work experience and roles
-- Animated timeline and interactive cards
+- Optimized Performance: Uses useRef and a mounted state check to initialize the canvas only on the client side, preventing server-side rendering errors and ensuring smooth frame rates.
 
-### 🧩 Navbar [`src/components/ui/navbar.js`]
-- Fixed navigation bar with theme toggle
-- Adapts colors based on selected theme
+- Animated Profile & Stats: Combines CSS transitions for the profile image with IntersectionObserver logic to trigger "count-up" animations for your project and experience totals.
 
-### 🗂️ Portfolio Card [`src/components/PortfolioCard.js`]
-- Displays project title, description, and link
-- Scales and changes color on hover
+👤 About Page [src/app/aboutpage/page.js]
+- Tech Stack Visualization: A grid of technical competencies featuring animated progress bars.
+
+- Visibility Tracking: Implements skillsRef to trigger skill bar filling animations only when the user reaches the section.
+
+- Personal Overview: Detailed breakdown of professional background and interests.
+
+💼 Experience Page [src/app/experiencepage/page.js]
+- Professional Timeline: A chronological display of work history and roles.
+
+- Interactive UI: Uses Tailwind’s group-hover effects to provide tactile feedback as users explore your career path.
+
+- Three js: To display the background mouse image 
+
+🧩 Navbar [src/components/ui/navbar.js]
+- Smart Navigation: A sticky, responsive header that adapts its transparency and border colors based on the theme.
+
+- Theme Controller: The central hub for switching the site's visual mode, which automatically signals the Vanta.js background to re-render.
 
 ---
 
